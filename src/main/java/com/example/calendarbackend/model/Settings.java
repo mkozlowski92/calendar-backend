@@ -26,6 +26,6 @@ public class Settings {
      * Length of luteal phase.
      * default value is 14.
      */
-    private int luthealPhaseLength;
+    private int lutealPhaseLength;
 
 }
