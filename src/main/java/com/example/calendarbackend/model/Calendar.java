@@ -9,7 +9,9 @@ public class Calendar {
 
     private LocalDate date;
 
-    private boolean period;
+    private boolean periodStart;
+
+    private boolean periodEnd;
 
     private boolean moodType1;
 
@@ -20,10 +22,6 @@ public class Calendar {
     private boolean moodType4;
 
     private boolean moodType5;
-
-    private boolean moodType6;
-
-    private boolean moodType7;
 
     private String notes;
 
