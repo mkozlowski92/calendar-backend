@@ -1,17 +1,31 @@
 package com.example.calendarbackend.model;
 
+/**
+ * Settings class only for main user account.
+ */
 public class Settings {
 
-    //optional
+    /**
+     * Optional ID of partner account.
+     */
     private long partnerId;
 
-    //default value
-    private int value1;
+    /**
+     * Length of cycle.
+     * default value is 28.
+     */
+    private int cycleLength;
 
-    //default value
-    private int value2;
+    /**
+     * Length of period.
+     * default value is 6.
+     */
+    private int periodLength;
 
-    //default value
-    private int value3;
+    /**
+     * Length of luteal phase.
+     * default value is 14.
+     */
+    private int luthealPhaseLength;
 
 }

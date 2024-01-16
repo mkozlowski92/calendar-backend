@@ -1,15 +1,26 @@
 package com.example.calendarbackend.model;
 
 public class User {
-    //unique key
+    /**
+     * Unique ID of user.
+     */
     private long id;
 
-    //email unique
+    /**
+     * Unique e-mail of user.
+     */
     private String userName;
 
+    /**
+     * Password of user.
+     */
     private String password;
 
-    //true = main user, false = partner
+    /**
+     * Account type.
+     * true = main user
+     * false = partner
+     */
     private boolean mainAccount;
 
 }
