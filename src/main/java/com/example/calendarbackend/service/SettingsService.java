@@ -31,7 +31,7 @@ public class SettingsService {
         Settings addedSettings = new Settings();
         addedSettings.setId(0L);
         addedSettings.setUser(user);
-        addedSettings.setPartnerId(3);
+//        addedSettings.setPartnerId(0L);
         addedSettings.setCycleLength(28);
         addedSettings.setPeriodLength(6);
         addedSettings.setLutealPhaseLength(14);

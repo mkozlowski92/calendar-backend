@@ -62,12 +62,14 @@ public class UserController {
     )
     /**
      * Add new user.
+     * Requires password at least 5 characters password length.
      * @param user - User to add.
      * @return ResponseEntity with added user.
      */
     @PostMapping("/addUser")
     public ResponseEntity<User> addUser(@RequestBody User user) {
         try {
+            if (user.getPassword().length()<5) return ResponseEntity.status(409).build();
             user.setId(0L);
             User addedUser = userService.addUser(user);
             if (addedUser == null) return ResponseEntity.status(409).build();
