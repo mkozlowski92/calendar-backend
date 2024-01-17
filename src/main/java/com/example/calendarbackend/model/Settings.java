@@ -1,9 +1,32 @@
 package com.example.calendarbackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * Settings class only for main user account.
  */
+@Getter
+@Setter
+@Entity(name = "settings")
 public class Settings {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    /**
+     * Unique ID of settings.
+     */
+    private long id;
+
+    /**
+     * User ID.
+     */
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
+    private User user;
 
     /**
      * Optional ID of partner account.
