@@ -6,7 +6,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Settings class only for main user account.
+ * Represents settings.
+ * Class only for main user account.
+ * It is used to store data about partner account ID (optional), lengths of cycle.
  */
 @Getter
 @Setter

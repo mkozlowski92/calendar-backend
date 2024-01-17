@@ -1,6 +1,5 @@
 package com.example.calendarbackend.model;
 
-import com.example.calendarbackend.service.UserService;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -8,6 +7,10 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 
+/**
+ * Represents days in a calendar.
+ * It is used to store data about days of a cycle, moods, additional notes.
+ */
 @Getter
 @Setter
 @Entity(name = "calendar_days")
