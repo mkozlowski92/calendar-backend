@@ -6,12 +6,13 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/users")
 public class UserController {
+
     /**
      * Service for managing users.
      */
@@ -30,6 +32,7 @@ public class UserController {
      * Constructor to inject user service.
      * @param userService - The user service.
      */
+    @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
@@ -46,7 +49,7 @@ public class UserController {
                             )
                     ),
                     @ApiResponse(
-                            responseCode = "400",
+                            responseCode = "409",
                             description = "User e-mail already exists",
                             content = @Content
                     ),
@@ -66,25 +69,13 @@ public class UserController {
     public ResponseEntity<User> addUser(@RequestBody User user) {
         try {
             user.setId(0L);
+            System.out.println(user.getUserName() + user.getPassword() + user.isMainAccount());
             User addedUser = userService.addUser(user);
             return ResponseEntity.ok(addedUser);
         } catch (DataAccessException exception) {
             return ResponseEntity.internalServerError().build();
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
