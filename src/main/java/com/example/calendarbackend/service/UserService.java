@@ -31,8 +31,21 @@ public class UserService {
      * @return The created user.
      */
     public User addUser(User user){
-        return userRepository.save(user);
+
+        if (existsUserByUserName(user.getUserName()))
+            return userRepository.save(user);
+        return null;
     }
 
+    /**
+     * Checks if user exists.
+     * @param userName - Username of a user.
+     * @return Returns boolean - True if exists, false if doesn't exist.
+     */
+    public boolean existsUserByUserName(String userName) {
+        if (userRepository.findUserByUserName(userName)==null)
+        return true;
+        return false;
+    }
 
 }

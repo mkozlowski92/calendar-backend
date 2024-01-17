@@ -69,14 +69,12 @@ public class UserController {
     public ResponseEntity<User> addUser(@RequestBody User user) {
         try {
             user.setId(0L);
-            System.out.println(user.getUserName() + user.getPassword() + user.isMainAccount());
             User addedUser = userService.addUser(user);
+            if (addedUser == null) return ResponseEntity.status(409).build();
             return ResponseEntity.ok(addedUser);
         } catch (DataAccessException exception) {
             return ResponseEntity.internalServerError().build();
         }
     }
-
-
 
 }
