@@ -1,18 +1,32 @@
 package com.example.calendarbackend.model;
 
+import com.example.calendarbackend.service.UserService;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.LocalDate;
 
+@Getter
+@Setter
+@Entity(name = "calendar_days")
 public class Calendar {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     /**
      * Unique ID.
      */
     private long id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
     /**
      * User ID.
      */
-    private long userId;
+    private User user;
 
     /**
      * Date of a day.
