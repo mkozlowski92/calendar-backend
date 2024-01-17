@@ -67,14 +67,14 @@ public class UserController {
      */
     @PostMapping("/addUser")
     public ResponseEntity<User> addUser(@RequestBody User user) {
-//        try {
+        try {
             user.setId(0L);
             User addedUser = userService.addUser(user);
             if (addedUser == null) return ResponseEntity.status(409).build();
             return ResponseEntity.ok(addedUser);
-//        } catch (DataAccessException exception) {
-//            return ResponseEntity.internalServerError().build();
-//        }
+        } catch (DataAccessException exception) {
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
 }
