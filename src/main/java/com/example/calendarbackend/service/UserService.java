@@ -17,12 +17,19 @@ public class UserService {
     private final UserRepository userRepository;
 
     /**
-     * Constructor to inject user repository.
-     * @param userRepository -The user repository.
+     * Repository for managing settings.
+     */
+    private final SettingsService settingsService;
+
+    /**
+     * Constructor to inject user repository and settings service.
+     * @param userRepository  - User repository.
+     * @param settingsService - Settings service.
      */
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, SettingsService settingsService) {
         this.userRepository = userRepository;
+        this.settingsService = settingsService;
     }
 
     /**
@@ -32,15 +39,18 @@ public class UserService {
      */
     public User addUser(User user){
 
-        if (existsUserByUserName(user.getUserName()))
-            return userRepository.save(user);
+        if (existsUserByUserName(user.getUserName())) {
+            User addedUSer = userRepository.save(user);
+            if (user.isMainAccount()) settingsService.CreateSettingsForUser(addedUSer);
+            return addedUSer;
+        }
         return null;
     }
 
     /**
      * Checks if user exists.
      * @param userName - Username of a user.
-     * @return Returns boolean - True if exists, false if doesn't exist.
+     * @return Returns boolean - True if exists, false if it doesn't exist.
      */
     public boolean existsUserByUserName(String userName) {
         if (userRepository.findUserByUserName(userName)==null)

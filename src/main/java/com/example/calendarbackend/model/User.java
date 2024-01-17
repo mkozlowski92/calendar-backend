@@ -45,6 +45,7 @@ public class User {
      * Settings model association.
      */
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @PrimaryKeyJoinColumn(name = "id")
     @JsonIgnore
     private Settings settings;
 
