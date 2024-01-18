@@ -76,9 +76,46 @@ public class UserController {
         }
     }
 
+    /**
+     * Validates user.
+     * @param userName - User name.
+     * @param password Password of user.
+     * @return ID of user.
+     */
+    @Operation(summary = "Login")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Logged in",
+                            content = @Content(
+                                    mediaType="application/json",
+                                    array = @ArraySchema(schema = @Schema(implementation = Long.class))
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "409",
+                            description = "Validation not successful",
+                            content = @Content
+                    ),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Server error",
+                            content = @Content
+                    )
+            }
+    )
     @GetMapping("/login")
-    public ResponseEntity<Void> loginUser(@RequestParam String userName, String password) {
-        return null;
+    public ResponseEntity<Long> loginUser(@RequestParam String userName, String password) {
+        try {
+            if (password.length()<5) return ResponseEntity.status(409).build();
+            if (userName.length()<5) return ResponseEntity.status(409).build();
+            Long userId = userService.validateUser(userName, password);
+            if (userId==null) return ResponseEntity.status(409).build();
+            return ResponseEntity.ok(userId);
+        } catch (DataAccessException exception) {
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
 }
