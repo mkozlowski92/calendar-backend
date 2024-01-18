@@ -17,11 +17,12 @@ import lombok.Setter;
 @Entity(name = "settings")
 public class Settings {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     /**
      * Unique ID of settings.
      */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private long id;
 
     /**

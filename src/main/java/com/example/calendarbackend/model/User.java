@@ -16,22 +16,24 @@ import java.util.List;
 @Entity(name = "users")
 public class User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonIgnore
     /**
      * Unique ID of user.
      */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private long id;
 
     /**
      * Unique e-mail of user.
      */
+    @Column(nullable = false, unique = true)
     private String userName;
 
     /**
      * Password of user.
      */
+    @Column(nullable = false)
     private String password;
 
     /**
