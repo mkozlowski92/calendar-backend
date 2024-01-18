@@ -10,6 +10,13 @@ import org.springframework.stereotype.Service;
 public class SettingsService {
 
     /**
+     * Declared default values of cycle.
+     */
+    private final int DEFAULT_CYCLE_LENGTH = 28;
+    private final int DEFAULT_PERIOD_LENGTH = 5;
+    private final int DEFAULT_LUTEAL_PHASE_LENGTH = 14;
+
+    /**
      * Repository for managing settings.
      */
     private final SettingsRepository settingsRepository;
@@ -31,10 +38,9 @@ public class SettingsService {
         Settings addedSettings = new Settings();
         addedSettings.setId(0L);
         addedSettings.setUser(user);
-//        addedSettings.setPartnerId(0L);
-        addedSettings.setCycleLength(28);
-        addedSettings.setPeriodLength(6);
-        addedSettings.setLutealPhaseLength(14);
+        addedSettings.setCycleLength(DEFAULT_CYCLE_LENGTH);
+        addedSettings.setPeriodLength(DEFAULT_PERIOD_LENGTH);
+        addedSettings.setLutealPhaseLength(DEFAULT_LUTEAL_PHASE_LENGTH);
         settingsRepository.save(addedSettings);
     }
 
