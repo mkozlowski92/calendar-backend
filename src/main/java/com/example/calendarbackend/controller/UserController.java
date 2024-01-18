@@ -56,7 +56,7 @@ public class UserController {
                     ),
                     @ApiResponse(
                             responseCode = "400",
-                            description = "User e-mail already exists",
+                            description = "User e-mail already exists or too short credentials",
                             content = @Content
                     ),
                     @ApiResponse(
@@ -97,7 +97,7 @@ public class UserController {
                     ),
                     @ApiResponse(
                             responseCode = "400",
-                            description = "Validation not successful",
+                            description = "Validation not successful. Incorrect or too short credentials.",
                             content = @Content
                     ),
                     @ApiResponse(
