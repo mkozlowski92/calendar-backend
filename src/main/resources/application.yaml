@@ -11,6 +11,13 @@ spring:
         hibernate:
             ddl-auto: update
         generate-ddl: true
+    web:
+        cors:
+            allow-credentials: true
+            allowed-origins: "*"
+            allowed-methods: GET, POST, PATCH, PUT, DELETE, OPTIONS, HEAD
+            max-age: 3600
+            allowed-headers: "*"
 
 spring-doc:
     swagger-ui:
