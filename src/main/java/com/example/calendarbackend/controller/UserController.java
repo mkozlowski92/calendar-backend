@@ -1,5 +1,7 @@
 package com.example.calendarbackend.controller;
 
+import com.example.calendarbackend.exception.IncorrectCredentials;
+import com.example.calendarbackend.exception.TooShortCredentials;
 import com.example.calendarbackend.model.User;
 import com.example.calendarbackend.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -52,7 +54,7 @@ public class UserController {
                             )
                     ),
                     @ApiResponse(
-                            responseCode = "409",
+                            responseCode = "400",
                             description = "User e-mail already exists",
                             content = @Content
                     ),
@@ -66,9 +68,11 @@ public class UserController {
     @PostMapping("/addUser")
     public ResponseEntity<User> addUser(@RequestBody User user) {
         try {
+            //too short password
             if (user.getPassword().length()<5) return ResponseEntity.status(409).build();
             user.setId(0L);
             User addedUser = userService.addUser(user);
+            //username exists
             if (addedUser == null) return ResponseEntity.status(409).build();
             return ResponseEntity.ok(addedUser);
         } catch (DataAccessException exception) {
@@ -94,7 +98,7 @@ public class UserController {
                             )
                     ),
                     @ApiResponse(
-                            responseCode = "409",
+                            responseCode = "400",
                             description = "Validation not successful",
                             content = @Content
                     ),
@@ -106,12 +110,11 @@ public class UserController {
             }
     )
     @GetMapping("/login")
-    public ResponseEntity<Long> loginUser(@RequestParam String userName, String password) {
+    public ResponseEntity<Long> loginUser(@RequestParam String userName, String password) throws TooShortCredentials, IncorrectCredentials {
         try {
-            if (password.length()<5) return ResponseEntity.status(409).build();
-            if (userName.length()<5) return ResponseEntity.status(409).build();
+            if (password.length()<5||userName.length()<5) throw new TooShortCredentials();
             Long userId = userService.validateUser(userName, password);
-            if (userId==null) return ResponseEntity.status(409).build();
+            if (userId==null) throw new IncorrectCredentials();
             return ResponseEntity.ok(userId);
         } catch (DataAccessException exception) {
             return ResponseEntity.internalServerError().build();

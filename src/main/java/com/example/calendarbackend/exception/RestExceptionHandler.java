@@ -11,12 +11,15 @@ import java.time.LocalDateTime;
 @RestControllerAdvice
 public class RestExceptionHandler {
 
-    @ExceptionHandler({TemplateException.class})
+    @ExceptionHandler({
+            TooShortCredentials.class,
+            IncorrectCredentials.class
+    })
     public ResponseEntity<ErrorResponse> handleBadRequestExceptions(Exception exception, WebRequest request){
         ErrorResponse errorResponse = new ErrorResponse(
                 LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST.value(),
-                "Bad request",
+                exception.getMessage(),
                 request.getDescription(false)
         );
 
