@@ -11,10 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Rest controller for managing users.
@@ -37,6 +34,12 @@ public class UserController {
         this.userService = userService;
     }
 
+    /**
+     * Add new user.
+     * Requires password at least 5 characters password length.
+     * @param user - User to add.
+     * @return ResponseEntity with added user.
+     */
     @Operation(summary = "Add User")
     @ApiResponses(
             value = {
@@ -60,12 +63,6 @@ public class UserController {
                     )
             }
     )
-    /**
-     * Add new user.
-     * Requires password at least 5 characters password length.
-     * @param user - User to add.
-     * @return ResponseEntity with added user.
-     */
     @PostMapping("/addUser")
     public ResponseEntity<User> addUser(@RequestBody User user) {
         try {
@@ -77,6 +74,11 @@ public class UserController {
         } catch (DataAccessException exception) {
             return ResponseEntity.internalServerError().build();
         }
+    }
+
+    @GetMapping("/login")
+    public ResponseEntity<Void> loginUser(@RequestParam String userName, String password) {
+        return null;
     }
 
 }
