@@ -16,19 +16,20 @@ import java.time.LocalDate;
 @Entity(name = "calendar_days")
 public class Calendar {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     /**
      * Unique ID.
      */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    @JsonIgnore
     /**
      * User ID.
      */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
     /**
