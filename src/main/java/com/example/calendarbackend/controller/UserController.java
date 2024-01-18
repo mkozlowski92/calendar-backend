@@ -2,6 +2,7 @@ package com.example.calendarbackend.controller;
 
 import com.example.calendarbackend.exception.IncorrectCredentials;
 import com.example.calendarbackend.exception.TooShortCredentials;
+import com.example.calendarbackend.exception.UserNameExists;
 import com.example.calendarbackend.model.User;
 import com.example.calendarbackend.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -66,14 +67,11 @@ public class UserController {
             }
     )
     @PostMapping("/addUser")
-    public ResponseEntity<User> addUser(@RequestBody User user) {
+    public ResponseEntity<User> addUser(@RequestBody User user) throws UserNameExists, TooShortCredentials{
         try {
-            //too short password
-            if (user.getPassword().length()<5) return ResponseEntity.status(409).build();
+            if (user.getPassword().length()<5||user.getUserName().length()<5) throw new TooShortCredentials();
             user.setId(0L);
             User addedUser = userService.addUser(user);
-            //username exists
-            if (addedUser == null) return ResponseEntity.status(409).build();
             return ResponseEntity.ok(addedUser);
         } catch (DataAccessException exception) {
             return ResponseEntity.internalServerError().build();

@@ -12,8 +12,9 @@ import java.time.LocalDateTime;
 public class RestExceptionHandler {
 
     @ExceptionHandler({
+            IncorrectCredentials.class,
             TooShortCredentials.class,
-            IncorrectCredentials.class
+            UserNameExists.class
     })
     public ResponseEntity<ErrorResponse> handleBadRequestExceptions(Exception exception, WebRequest request){
         ErrorResponse errorResponse = new ErrorResponse(
