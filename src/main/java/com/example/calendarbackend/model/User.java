@@ -7,6 +7,10 @@ import lombok.Setter;
 
 import java.util.List;
 
+/**
+ * Represents user.
+ * It is used to store data about username (e-mail), password, type of account.
+ */
 @Getter
 @Setter
 @Entity(name = "users")
@@ -14,6 +18,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     /**
      * Unique ID of user.
      */
@@ -40,6 +45,7 @@ public class User {
      * Settings model association.
      */
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @PrimaryKeyJoinColumn(name = "id")
     @JsonIgnore
     private Settings settings;
 

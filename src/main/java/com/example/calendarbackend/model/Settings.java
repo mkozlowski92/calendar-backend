@@ -1,12 +1,16 @@
 package com.example.calendarbackend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Settings class only for main user account.
+ * Represents settings.
+ * Class only for main user account.
+ * It is used to store data about partner account ID (optional), lengths of cycle.
  */
 @Getter
 @Setter
@@ -24,14 +28,19 @@ public class Settings {
      * User ID.
      */
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @NotNull
     @JsonIgnore
     private User user;
 
     /**
      * Optional ID of partner account.
      */
-    private long partnerId;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "partner_id", referencedColumnName = "id")
+    @Nullable
+    @JsonIgnore
+    private User partnerUser;
 
     /**
      * Length of cycle.
