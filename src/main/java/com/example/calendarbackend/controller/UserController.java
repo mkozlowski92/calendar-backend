@@ -114,7 +114,6 @@ public class UserController {
         try {
             if (password.length()<5||userName.length()<5) throw new TooShortCredentials();
             Long userId = userService.validateUser(userName, password);
-            if (userId==null) throw new IncorrectCredentials();
             return ResponseEntity.ok(userId);
         } catch (DataAccessException exception) {
             return ResponseEntity.internalServerError().build();

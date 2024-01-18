@@ -1,5 +1,6 @@
 package com.example.calendarbackend.service;
 
+import com.example.calendarbackend.exception.IncorrectCredentials;
 import com.example.calendarbackend.model.User;
 import com.example.calendarbackend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,11 +66,11 @@ public class UserService {
      * @param password - Password of user.
      * @return ID of user.
      */
-    public Long validateUser(String userName, String password) {
+    public Long validateUser(String userName, String password) throws IncorrectCredentials {
         User user = userRepository.findUserByUserName(userName);
-        if (user==null) return null;
+        if (user==null) throw new IncorrectCredentials();
         if (Objects.equals(user.getPassword(), password)) return user.getId();
-        return null;
+        throw new IncorrectCredentials();
     }
 
 }
