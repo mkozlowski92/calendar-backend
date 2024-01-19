@@ -43,6 +43,7 @@ public class UserController {
      * Requires password at least 5 characters password length.
      * @param user - User to add.
      * @return ResponseEntity with added user.
+     * @throws UserNameExists - username already exists.
      */
     @Operation(summary = "Add User")
     @ApiResponses(
@@ -82,8 +83,10 @@ public class UserController {
     /**
      * Validates user.
      * @param userName - User name.
-     * @param password Password of user.
+     * @param password - Password of user.
      * @return ID of user.
+     * @throws IncorrectCredentials - username or password are incorrect.
+     * @throws TooShortCredentials - username or password are too short.
      */
     @Operation(summary = "Login")
     @ApiResponses(
