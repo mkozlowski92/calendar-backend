@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 /**
  * Rest controller for managing users.
  */
+@CrossOrigin
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -42,6 +43,7 @@ public class UserController {
      * Requires password at least 5 characters password length.
      * @param user - User to add.
      * @return ResponseEntity with added user.
+     * @throws UserNameExists - username already exists.
      */
     @Operation(summary = "Add User")
     @ApiResponses(
@@ -67,12 +69,12 @@ public class UserController {
             }
     )
     @PostMapping("/addUser")
-    public ResponseEntity<User> addUser(@RequestBody User user) throws UserNameExists, TooShortCredentials{
+    public ResponseEntity<Void> addUser(@RequestBody User user) throws UserNameExists, TooShortCredentials{
         try {
             if (user.getPassword().length()<5||user.getUserName().length()<5) throw new TooShortCredentials();
             user.setId(0L);
-            User addedUser = userService.addUser(user);
-            return ResponseEntity.ok(addedUser);
+            userService.addUser(user);
+            return ResponseEntity.ok().build();
         } catch (DataAccessException exception) {
             return ResponseEntity.internalServerError().build();
         }
@@ -81,8 +83,10 @@ public class UserController {
     /**
      * Validates user.
      * @param userName - User name.
-     * @param password Password of user.
+     * @param password - Password of user.
      * @return ID of user.
+     * @throws IncorrectCredentials - username or password are incorrect.
+     * @throws TooShortCredentials - username or password are too short.
      */
     @Operation(summary = "Login")
     @ApiResponses(
