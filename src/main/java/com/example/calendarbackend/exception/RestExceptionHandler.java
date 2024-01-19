@@ -13,6 +13,7 @@ public class RestExceptionHandler {
 
     @ExceptionHandler({
             IncorrectCredentials.class,
+            NotMainAccount.class,
             SettingsMissing.class,
             TooShortCredentials.class,
             UserNameExists.class

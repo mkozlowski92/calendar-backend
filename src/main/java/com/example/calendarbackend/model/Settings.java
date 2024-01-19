@@ -1,11 +1,11 @@
 package com.example.calendarbackend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.Optional;
 
 /**
  * Represents settings.
@@ -30,7 +30,6 @@ public class Settings {
      */
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @NotNull
     @JsonIgnore
     private User user;
 
@@ -39,7 +38,6 @@ public class Settings {
      */
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "partner_id", referencedColumnName = "id")
-    @Nullable
     @JsonIgnore
     private User partnerUser;
 
@@ -61,4 +59,6 @@ public class Settings {
      */
     private int lutealPhaseLength;
 
+    public void setPartnerUser(Optional<User> user) {
+    }
 }

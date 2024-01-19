@@ -1,8 +1,8 @@
 package com.example.calendarbackend.service;
 
+import com.example.calendarbackend.exception.NotMainAccount;
 import com.example.calendarbackend.exception.SettingsMissing;
 import com.example.calendarbackend.model.Settings;
-import com.example.calendarbackend.model.User;
 import com.example.calendarbackend.repository.SettingsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,39 +11,25 @@ import org.springframework.stereotype.Service;
 public class SettingsService {
 
     /**
-     * Declared default values of cycle.
-     */
-    private final int DEFAULT_CYCLE_LENGTH = 28;
-    private final int DEFAULT_PERIOD_LENGTH = 5;
-    private final int DEFAULT_LUTEAL_PHASE_LENGTH = 14;
-
-    /**
      * Repository for managing settings.
      */
     private final SettingsRepository settingsRepository;
 
     /**
+     * Service for managing users.
+     */
+    private final UserService userService;
+
+    /**
      * Constructor to inject settings repository.
      *
      * @param settingsRepository - The settings repository.
+     * @param userService - User service.
      */
     @Autowired
-    public SettingsService(SettingsRepository settingsRepository) {
+    public SettingsService(SettingsRepository settingsRepository, UserService userService) {
         this.settingsRepository = settingsRepository;
-    }
-
-    /**
-     * Creates new settings.
-     * @param user - user whos settings are created.
-     */
-    public void CreateSettingsForUser(User user) {
-        Settings addedSettings = new Settings();
-        addedSettings.setId(0L);
-        addedSettings.setUser(user);
-        addedSettings.setCycleLength(DEFAULT_CYCLE_LENGTH);
-        addedSettings.setPeriodLength(DEFAULT_PERIOD_LENGTH);
-        addedSettings.setLutealPhaseLength(DEFAULT_LUTEAL_PHASE_LENGTH);
-        settingsRepository.save(addedSettings);
+        this.userService = userService;
     }
 
     /**
@@ -51,11 +37,33 @@ public class SettingsService {
      * @param userId - ID of user.
      * @return settings.
      */
-    public Settings getSettingsById(Long userId) throws SettingsMissing {
+    public Settings getSettingsByUserId(Long userId) throws SettingsMissing {
         Settings userSettings = settingsRepository.findByUserId(userId);
         if (userSettings==null) userSettings = settingsRepository.findByPartnerUserId(userId);
         if (userSettings==null) throw new SettingsMissing();
         return userSettings;
+    }
+
+    /**
+     * Saves settings.
+     * @param settings - Settings of user.
+     */
+    public void saveSettings(Settings settings) {
+        settingsRepository.save(settings);
+    }
+
+    public Settings updateSettings(Settings settings, Long userId, Long partnerUserId) throws NotMainAccount, SettingsMissing {
+
+        if (!userService.isMainAccount(userId)) throw new NotMainAccount();
+
+        Settings oldSettings = getSettingsByUserId(userId);
+        settings.setId(oldSettings.getId());
+        settings.setUser(oldSettings.getUser());
+        settings.setPartnerUser(userService.getUser(partnerUserId));
+
+        saveSettings(settings);
+
+        return settings;
     }
 
 }
