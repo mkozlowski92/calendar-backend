@@ -1,5 +1,6 @@
 package com.example.calendarbackend.controller;
 
+import com.example.calendarbackend.exception.SettingsMissing;
 import com.example.calendarbackend.model.Settings;
 import com.example.calendarbackend.service.SettingsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ public class SettingsController {
     }
 
     @GetMapping("/getSettings")
-    private ResponseEntity<Settings> getSettings(@RequestParam Long userId) {
+    private ResponseEntity<Settings> getSettings(@RequestParam Long userId) throws SettingsMissing {
         try {
             return ResponseEntity.ok().body(settingsService.getSettingsById(userId));
         } catch (DataAccessException exception) {

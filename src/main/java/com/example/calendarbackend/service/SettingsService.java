@@ -1,5 +1,6 @@
 package com.example.calendarbackend.service;
 
+import com.example.calendarbackend.exception.SettingsMissing;
 import com.example.calendarbackend.model.Settings;
 import com.example.calendarbackend.model.User;
 import com.example.calendarbackend.repository.SettingsRepository;
@@ -50,9 +51,10 @@ public class SettingsService {
      * @param userId - ID of user.
      * @return settings.
      */
-    public Settings getSettingsById(Long userId) {
+    public Settings getSettingsById(Long userId) throws SettingsMissing {
         Settings userSettings = settingsRepository.findByUserId(userId);
         if (userSettings==null) userSettings = settingsRepository.findByPartnerUserId(userId);
+        if (userSettings==null) throw new SettingsMissing();
         return userSettings;
     }
 
