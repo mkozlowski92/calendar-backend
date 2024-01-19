@@ -23,6 +23,7 @@ public class SettingsService {
 
     /**
      * Constructor to inject settings repository.
+     *
      * @param settingsRepository - The settings repository.
      */
     @Autowired
@@ -42,6 +43,17 @@ public class SettingsService {
         addedSettings.setPeriodLength(DEFAULT_PERIOD_LENGTH);
         addedSettings.setLutealPhaseLength(DEFAULT_LUTEAL_PHASE_LENGTH);
         settingsRepository.save(addedSettings);
+    }
+
+    /**
+     * Gets settings of user.
+     * @param userId - ID of user.
+     * @return settings.
+     */
+    public Settings getSettingsById(Long userId) {
+        Settings userSettings = settingsRepository.findByUserId(userId);
+        if (userSettings==null) userSettings = settingsRepository.findByPartnerUserId(userId);
+        return userSettings;
     }
 
 }
