@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Optional;
 
 /**
  * Represents settings.
@@ -59,6 +58,4 @@ public class Settings {
      */
     private int lutealPhaseLength;
 
-    public void setPartnerUser(Optional<User> user) {
-    }
 }

@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
-import java.util.Optional;
 
 /**
  * Service class for managing users and related operations.
@@ -89,23 +88,19 @@ public class UserService {
     public boolean isMainAccount(Long userId) {
         if (userRepository.existsById(userId))
             return userRepository.findById(userId).get().isMainAccount();
-        throw new RuntimeException("no account");
+        throw new RuntimeException("no account (isMainAccount");
     }
 
     /**
      * Gets user by ID.
      *
-     * @param userId - user ID.
+     * @param userName - username.
      * @return user.
      */
-    public Optional<User> getUser(Long userId) {
-
-        Optional<User> user = userRepository.findById(userId);
-        if (user==null) throw new RuntimeException();
-        return user;
-//        if (userRepository.existsById(userId))
-//            return userRepository.findById(userId);
-//        throw new RuntimeException("no account");
+    public User getUser(String userName) {
+        if (userRepository.existsByUserName(userName))
+            return userRepository.findUserByUserName(userName);
+        throw new RuntimeException("no account (getUser)");
     }
 
 }

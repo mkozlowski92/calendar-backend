@@ -1,5 +1,7 @@
 package com.example.calendarbackend.controller;
 
+import com.example.calendarbackend.exception.AccountDoesNotExist;
+import com.example.calendarbackend.exception.NotInRange;
 import com.example.calendarbackend.exception.NotMainAccount;
 import com.example.calendarbackend.exception.SettingsMissing;
 import com.example.calendarbackend.model.Settings;
@@ -68,9 +70,12 @@ public class SettingsController {
             }
     )
     @PutMapping("/updateSettings")
-    private ResponseEntity<Settings> updateSettings(@RequestBody Settings settings, @RequestParam Long userId, @RequestParam Long partnerUserId) throws NotMainAccount, SettingsMissing {
-        settingsService.updateSettings(settings, userId, partnerUserId);
-        return ResponseEntity.ok(settings);
+    private ResponseEntity<Settings> updateSettings(@RequestBody Settings settings, @RequestParam Long userId, @RequestParam String partnerUserName) throws AccountDoesNotExist, NotInRange, NotMainAccount, SettingsMissing {
+        try {
+            return ResponseEntity.ok(settingsService.updateSettings(settings, userId, partnerUserName));
+        } catch (DataAccessException exception) {
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
     /**
