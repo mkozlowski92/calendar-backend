@@ -92,7 +92,7 @@ public class UserService {
     }
 
     /**
-     * Gets user by ID.
+     * Gets user by username.
      *
      * @param userName - username.
      * @return user.
@@ -101,6 +101,15 @@ public class UserService {
         if (userRepository.existsByUserName(userName))
             return userRepository.findUserByUserName(userName);
         throw new RuntimeException("no account (getUser)");
+    }
+
+    /**
+     * Checks if user exists.
+     * @param userId - user ID.
+     * @return true if exists, false if it doesn't exist.
+     */
+    public boolean existsUser(Long userId) {
+        return userRepository.existsById(userId);
     }
 
 }

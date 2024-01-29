@@ -12,10 +12,13 @@ import java.time.LocalDateTime;
 public class RestExceptionHandler {
 
     @ExceptionHandler({
-            AccountDoesNotExist.class,
             IncorrectCredentials.class,
+            MainAccountDoesNotExist.class,
             NotInRange.class,
             NotMainAccount.class,
+            PartnerAccountDoesNotExist.class,
+            PartnerAccountIsMainAccount.class,
+            PartnerAlreadyTaken.class,
             SettingsMissing.class,
             TooShortCredentials.class,
             UserNameExists.class

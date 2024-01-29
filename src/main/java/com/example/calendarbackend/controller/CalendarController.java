@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/calendar")
 public class CalendarController {
@@ -17,8 +19,6 @@ public class CalendarController {
     }
 
     @GetMapping("/getCalendar")
-    private ResponseEntity<Calendar> getCalendar() {
-        return ResponseEntity.ok().body(new Calendar());
-    }
+    private ResponseEntity<List<Calendar>> getCalendar() { return null; }
 
 }
