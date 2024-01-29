@@ -44,6 +44,7 @@ public class UserController {
      * @param user - User to add.
      * @return ResponseEntity with added user.
      * @throws UserNameExists - username already exists.
+     * @throws TooShortCredentials - Credentials are too short.
      */
     @Operation(summary = "Add User")
     @ApiResponses(
