@@ -98,9 +98,7 @@ public class UserService {
      * @return user.
      */
     public User getUser(String userName) {
-        if (userRepository.existsByUserName(userName))
-            return userRepository.findUserByUserName(userName);
-        throw new RuntimeException("no account (getUser)");
+          return userRepository.findUserByUserName(userName);
     }
 
     /**
