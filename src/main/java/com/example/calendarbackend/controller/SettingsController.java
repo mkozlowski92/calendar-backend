@@ -1,6 +1,6 @@
 package com.example.calendarbackend.controller;
 
-import com.example.calendarbackend.exception.SettingsMissing;
+import com.example.calendarbackend.exception.*;
 import com.example.calendarbackend.model.Settings;
 import com.example.calendarbackend.service.SettingsService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -36,9 +36,47 @@ public class SettingsController {
         this.settingsService = settingsService;
     }
 
+    /**
+     * Saves settings of user.
+     * @param settings - Settings of user.
+     * @param userId - User ID.
+     * @param partnerUserName - Username of partner.
+     * @return - Settings.
+     * @throws PartnerAccountDoesNotExist - Partner account doesn't exist.
+     * @throws NotInRange - Cycle values are not in range.
+     * @throws NotMainAccount - It is partner account.
+     * @throws PartnerAlreadyTaken - Partner account is already reserved by another main account.
+     * @throws SettingsMissing - settings are missing for that user.     */
+    @Operation(summary = "Update settings")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Updated",
+                            content = @Content(
+                                    mediaType="application/json",
+                                    array = @ArraySchema(schema = @Schema(implementation = Settings.class))
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Failed to save settings.",
+                            content = @Content
+                    ),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Server error",
+                            content = @Content
+                    )
+            }
+    )
     @PutMapping("/updateSettings")
-    private ResponseEntity<Void> updateSettings() {
-        return null;
+    private ResponseEntity<Settings> updateSettings(@RequestBody Settings settings, @RequestParam Long userId, @RequestParam String partnerUserName) throws MainAccountDoesNotExist, NotInRange, NotMainAccount, PartnerAlreadyTaken, PartnerAccountIsMainAccount, PartnerAccountDoesNotExist, SettingsMissing {
+        try {
+            return ResponseEntity.ok(settingsService.updateSettings(settings, userId, partnerUserName));
+        } catch (DataAccessException exception) {
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
     /**
@@ -55,7 +93,7 @@ public class SettingsController {
                             description = "Logged in",
                             content = @Content(
                                     mediaType="application/json",
-                                    array = @ArraySchema(schema = @Schema(implementation = Long.class))
+                                    array = @ArraySchema(schema = @Schema(implementation = Settings.class))
                             )
                     ),
                     @ApiResponse(
@@ -71,9 +109,9 @@ public class SettingsController {
             }
     )
     @GetMapping("/getSettings")
-    private ResponseEntity<Settings> getSettings(@RequestParam Long userId) throws SettingsMissing {
+    private ResponseEntity<Settings> getSettings(@RequestParam Long userId) throws MainAccountDoesNotExist, SettingsMissing {
         try {
-            return ResponseEntity.ok().body(settingsService.getSettingsById(userId));
+            return ResponseEntity.ok().body(settingsService.getSettingsByUserId(userId));
         } catch (DataAccessException exception) {
             return ResponseEntity.internalServerError().build();
         }
