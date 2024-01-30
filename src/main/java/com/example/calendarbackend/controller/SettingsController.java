@@ -42,6 +42,7 @@ public class SettingsController {
      * @param userId - User ID.
      * @param partnerUserName - Username of partner.
      * @return - Settings.
+     * @throws AccountDoesNotExist - Account with this ID doesn't exist.
      * @throws MainAccountDoesNotExist - Main account does not exist.
      * @throws NotInRange - Cycle values are not in range.
      * @throws NotMainAccount - It is partner account.
@@ -74,7 +75,7 @@ public class SettingsController {
             }
     )
     @PutMapping("/updateSettings")
-    private ResponseEntity<Settings> updateSettings(@RequestBody Settings settings, @RequestParam Long userId, @RequestParam String partnerUserName) throws MainAccountDoesNotExist, NotInRange, NotMainAccount, PartnerAlreadyTaken, PartnerAccountIsMainAccount, PartnerAccountDoesNotExist, SettingsMissing {
+    private ResponseEntity<Settings> updateSettings(@RequestBody Settings settings, @RequestParam Long userId, @RequestParam String partnerUserName) throws AccountDoesNotExist, MainAccountDoesNotExist, NotInRange, NotMainAccount, PartnerAlreadyTaken, PartnerAccountIsMainAccount, PartnerAccountDoesNotExist, SettingsMissing {
         try {
             return ResponseEntity.ok(settingsService.updateSettings(settings, userId, partnerUserName));
         } catch (DataAccessException exception) {

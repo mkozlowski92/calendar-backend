@@ -62,6 +62,7 @@ public class SettingsService {
      * @param userId - User ID.
      * @param partnerUserName - Username of partner.
      * @return - settings (lengths of cycle)
+     * @throws AccountDoesNotExist - Account with this ID doesn't exist.
      * @throws MainAccountDoesNotExist - Main account does not exist.
      * @throws NotInRange - Cycle values are not in range.
      * @throws NotMainAccount - It is partner account.
@@ -70,7 +71,7 @@ public class SettingsService {
      * @throws PartnerAccountDoesNotExist - Partner account doesn't exist.
      * @throws SettingsMissing - settings are missing for that user.
      */
-    public Settings updateSettings(Settings settings, Long userId, String partnerUserName) throws MainAccountDoesNotExist, NotInRange, NotMainAccount, PartnerAlreadyTaken, PartnerAccountIsMainAccount, PartnerAccountDoesNotExist, SettingsMissing {
+    public Settings updateSettings(Settings settings, Long userId, String partnerUserName) throws AccountDoesNotExist, MainAccountDoesNotExist, NotInRange, NotMainAccount, PartnerAlreadyTaken, PartnerAccountIsMainAccount, PartnerAccountDoesNotExist, SettingsMissing {
 
         if (    settings.getCycleLength() < MIN_CYCLE_LENGTH ||
                 settings.getCycleLength() > MAX_CYCLE_LENGTH ||

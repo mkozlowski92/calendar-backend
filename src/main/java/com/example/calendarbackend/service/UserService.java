@@ -1,5 +1,6 @@
 package com.example.calendarbackend.service;
 
+import com.example.calendarbackend.exception.AccountDoesNotExist;
 import com.example.calendarbackend.exception.IncorrectCredentials;
 import com.example.calendarbackend.exception.UserNameExists;
 import com.example.calendarbackend.model.Settings;
@@ -85,10 +86,11 @@ public class UserService {
      * @param userId - user ID.
      * @return - boolean: true - is main, false - is not main.
      */
-    public boolean isMainAccount(Long userId) {
+    public boolean isMainAccount(Long userId) throws AccountDoesNotExist {
+        //TODO beautify this code:
         if (userRepository.existsById(userId))
             return userRepository.findById(userId).get().isMainAccount();
-        throw new RuntimeException("no account (isMainAccount");
+        throw new AccountDoesNotExist();
     }
 
     /**
@@ -99,6 +101,16 @@ public class UserService {
      */
     public User getUser(String userName) {
           return userRepository.findUserByUserName(userName);
+    }
+
+    /**
+     * Gets user by user ID.
+     *
+     * @param userId - username.
+     * @return user.
+     */
+    public User getUser(Long userId) {
+        return userRepository.findUserById(userId);
     }
 
     /**
