@@ -81,15 +81,17 @@ public class SettingsService {
                 settings.getLutealPhaseLength() > MAX_LUTEAL_PHASE_LENGTH) throw new NotInRange();
 
         if (!userService.isMainAccount(userId)) throw new NotMainAccount();
-        if (userService.getUser(partnerUserName)==null) throw new PartnerAccountDoesNotExist();
+        if (userService.getUser(partnerUserName)==null && partnerUserName!= null) throw new PartnerAccountDoesNotExist();
 
         Settings oldSettings = getSettingsByUserId(userId);
         settings.setId(oldSettings.getId());
         settings.setUser(oldSettings.getUser());
 
-        settings.setPartnerUser(userService.getUser(partnerUserName));
-        if (settings.getPartnerUser().isMainAccount()) throw new PartnerAccountIsMainAccount();
-        if (settingsRepository.findByPartnerUserId(userService.getUser(partnerUserName).getId())!=null && settingsRepository.findByPartnerUserId(userService.getUser(partnerUserName).getId()).getUser().getId()!=userId) throw new PartnerAlreadyTaken();
+        if (partnerUserName!=null) {
+            settings.setPartnerUser(userService.getUser(partnerUserName));
+            if (settings.getPartnerUser().isMainAccount()) throw new PartnerAccountIsMainAccount();
+            if (settingsRepository.findByPartnerUserId(userService.getUser(partnerUserName).getId())!=null && settingsRepository.findByPartnerUserId(userService.getUser(partnerUserName).getId()).getUser().getId()!=userId) throw new PartnerAlreadyTaken();
+        }
 
         return settingsRepository.save(settings);
     }
