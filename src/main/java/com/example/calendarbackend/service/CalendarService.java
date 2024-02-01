@@ -44,7 +44,7 @@ public class CalendarService {
 
         if (!userService.isMainAccount(userId)) {
             if (settingsRepository.findByPartnerUserId(userId)!=null)
-                userId = settingsRepository.findByPartnerUserId(userId).getId();
+                userId = settingsRepository.findByPartnerUserId(userId).getUser().getId();
             else throw new MainAccountIsNotConnected();
         }
 
