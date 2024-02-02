@@ -51,13 +51,8 @@ public class CalendarService {
 
         if (calendar.isPeriodStart() && calendar.isPeriodEnd()) throw  new PeriodSameStartAndEnd();
 
-        //TODO: if  calendar for date and user id exists then get calendar id and set calendar.setId to that ID
-
-
-
-
-
-
+        if (calendarRepository.findCalendarByUserIdAndDate(userId, calendar.getDate())!=null)
+            calendar.setId(calendarRepository.findCalendarByUserIdAndDate(userId, calendar.getDate()).getId());
         calendar.setUser(userService.getUser(userId));
 
         return calendarRepository.save(calendar);
