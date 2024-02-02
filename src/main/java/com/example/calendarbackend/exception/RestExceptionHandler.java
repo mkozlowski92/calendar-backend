@@ -21,6 +21,7 @@ public class RestExceptionHandler {
             PartnerAccountDoesNotExist.class,
             PartnerAccountIsMainAccount.class,
             PartnerAlreadyTaken.class,
+            PeriodSameStartAndEnd.class,
             SettingsMissing.class,
             TooShortCredentials.class,
             UserNameExists.class

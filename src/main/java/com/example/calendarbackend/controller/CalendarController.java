@@ -2,6 +2,7 @@ package com.example.calendarbackend.controller;
 
 import com.example.calendarbackend.exception.AccountDoesNotExist;
 import com.example.calendarbackend.exception.MainAccountIsNotConnected;
+import com.example.calendarbackend.exception.PeriodSameStartAndEnd;
 import com.example.calendarbackend.model.Calendar;
 import com.example.calendarbackend.service.CalendarService;
 import org.springframework.dao.DataAccessException;
@@ -32,7 +33,7 @@ public class CalendarController {
     }
 
     @PutMapping("/updateCalendar")
-    private ResponseEntity<Calendar> updateCalendar(@RequestParam Long userId, @RequestBody Calendar calendar) throws AccountDoesNotExist, MainAccountIsNotConnected {
+    private ResponseEntity<Calendar> updateCalendar(@RequestParam Long userId, @RequestBody Calendar calendar) throws AccountDoesNotExist, MainAccountIsNotConnected, PeriodSameStartAndEnd {
         try {
             return ResponseEntity.ok(calendarService.updateCalendar(userId, calendar));
         } catch (DataAccessException exception) {

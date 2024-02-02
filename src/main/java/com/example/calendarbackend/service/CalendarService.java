@@ -2,6 +2,7 @@ package com.example.calendarbackend.service;
 
 import com.example.calendarbackend.exception.AccountDoesNotExist;
 import com.example.calendarbackend.exception.MainAccountIsNotConnected;
+import com.example.calendarbackend.exception.PeriodSameStartAndEnd;
 import com.example.calendarbackend.model.Calendar;
 import com.example.calendarbackend.repository.CalendarRepository;
 import com.example.calendarbackend.repository.SettingsRepository;
@@ -40,13 +41,15 @@ public class CalendarService {
         this.userService = userService;
     }
 
-    public Calendar updateCalendar(Long userId, Calendar calendar) throws AccountDoesNotExist, MainAccountIsNotConnected{
+    public Calendar updateCalendar(Long userId, Calendar calendar) throws AccountDoesNotExist, MainAccountIsNotConnected, PeriodSameStartAndEnd {
 
         if (!userService.isMainAccount(userId)) {
             if (settingsRepository.findByPartnerUserId(userId)!=null)
                 userId = settingsRepository.findByPartnerUserId(userId).getUser().getId();
             else throw new MainAccountIsNotConnected();
         }
+
+        if (calendar.isPeriodStart() && calendar.isPeriodEnd()) throw  new PeriodSameStartAndEnd();
 
         //TODO: if  calendar for date and user id exists then get calendar id and set calendar.setId to that ID
 
