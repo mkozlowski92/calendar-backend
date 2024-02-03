@@ -32,6 +32,15 @@ public class CalendarController {
         this.calendarService = calendarService;
     }
 
+    /**
+     * Updates single calendar day.
+     * @param userId - user ID.
+     * @param calendar - values of the calendar.
+     * @return calendar.
+     * @throws AccountDoesNotExist - Account with this ID doesn't exist.
+     * @throws MainAccountIsNotConnected - Main account isn't connected to this partner account.
+     * @throws PeriodSameStartAndEnd - Can't have start and end of period in the same day.
+     */
     @PutMapping("/updateCalendar")
     private ResponseEntity<Calendar> updateCalendar(@RequestParam Long userId, @RequestBody Calendar calendar) throws AccountDoesNotExist, MainAccountIsNotConnected, PeriodSameStartAndEnd {
         try {
