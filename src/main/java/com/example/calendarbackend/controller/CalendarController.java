@@ -4,7 +4,14 @@ import com.example.calendarbackend.exception.AccountDoesNotExist;
 import com.example.calendarbackend.exception.MainAccountIsNotConnected;
 import com.example.calendarbackend.exception.PeriodSameStartAndEnd;
 import com.example.calendarbackend.model.Calendar;
+import com.example.calendarbackend.model.Settings;
 import com.example.calendarbackend.service.CalendarService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,6 +48,29 @@ public class CalendarController {
      * @throws MainAccountIsNotConnected - Main account isn't connected to this partner account.
      * @throws PeriodSameStartAndEnd - Can't have start and end of period in the same day.
      */
+    @Operation(summary = "Get settings")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Update calendar",
+                            content = @Content(
+                                    mediaType="application/json",
+                                    array = @ArraySchema(schema = @Schema(implementation = Calendar.class))
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Main account isn't connected to this partner account.",
+                            content = @Content
+                    ),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Server error",
+                            content = @Content
+                    )
+            }
+    )
     @PutMapping("/updateCalendar")
     private ResponseEntity<Calendar> updateCalendar(@RequestParam Long userId, @RequestBody Calendar calendar) throws AccountDoesNotExist, MainAccountIsNotConnected, PeriodSameStartAndEnd {
         try {
