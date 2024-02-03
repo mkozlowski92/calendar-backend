@@ -4,7 +4,6 @@ import com.example.calendarbackend.exception.AccountDoesNotExist;
 import com.example.calendarbackend.exception.MainAccountIsNotConnected;
 import com.example.calendarbackend.exception.PeriodSameStartAndEnd;
 import com.example.calendarbackend.model.Calendar;
-import com.example.calendarbackend.model.Settings;
 import com.example.calendarbackend.service.CalendarService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -81,9 +80,9 @@ public class CalendarController {
     }
 
     @GetMapping("/getCalendar")
-    private ResponseEntity<List<Calendar>> getCalendar() {
+    private ResponseEntity<List<Calendar>> getCalendar(@RequestParam Long userId, @RequestParam Long year, @RequestParam Long month) {
         try {
-            return null;
+            return ResponseEntity.ok(calendarService.getCalendar(userId, year, month));
         } catch (DataAccessException exception){
             return ResponseEntity.internalServerError().build();
         }

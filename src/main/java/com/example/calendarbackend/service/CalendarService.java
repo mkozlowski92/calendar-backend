@@ -9,6 +9,8 @@ import com.example.calendarbackend.repository.SettingsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CalendarService {
 
@@ -65,6 +67,10 @@ public class CalendarService {
         calendar.setUser(userService.getUser(userId));
 
         return calendarRepository.save(calendar);
+    }
+
+    public List<Calendar> getCalendar (Long userId, Long year, Long month){
+        return null;
     }
 
 }
