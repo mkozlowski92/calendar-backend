@@ -42,11 +42,15 @@ public class SettingsController {
      * @param userId - User ID.
      * @param partnerUserName - Username of partner.
      * @return - Settings.
-     * @throws PartnerAccountDoesNotExist - Partner account doesn't exist.
+     * @throws AccountDoesNotExist - Account with this ID doesn't exist.
+     * @throws MainAccountDoesNotExist - Main account does not exist.
      * @throws NotInRange - Cycle values are not in range.
      * @throws NotMainAccount - It is partner account.
      * @throws PartnerAlreadyTaken - Partner account is already reserved by another main account.
-     * @throws SettingsMissing - settings are missing for that user.     */
+     * @throws PartnerAccountIsMainAccount - Partner's account is actually a main account.
+     * @throws PartnerAccountDoesNotExist - Partner account doesn't exist.
+     * @throws SettingsMissing - settings are missing for that user.
+     */
     @Operation(summary = "Update settings")
     @ApiResponses(
             value = {
@@ -71,7 +75,7 @@ public class SettingsController {
             }
     )
     @PutMapping("/updateSettings")
-    private ResponseEntity<Settings> updateSettings(@RequestBody Settings settings, @RequestParam Long userId, @RequestParam String partnerUserName) throws MainAccountDoesNotExist, NotInRange, NotMainAccount, PartnerAlreadyTaken, PartnerAccountIsMainAccount, PartnerAccountDoesNotExist, SettingsMissing {
+    private ResponseEntity<Settings> updateSettings(@RequestBody Settings settings, @RequestParam Long userId, @RequestParam(required = false) String partnerUserName) throws AccountDoesNotExist, MainAccountDoesNotExist, NotInRange, NotMainAccount, PartnerAlreadyTaken, PartnerAccountIsMainAccount, PartnerAccountDoesNotExist, SettingsMissing {
         try {
             return ResponseEntity.ok(settingsService.updateSettings(settings, userId, partnerUserName));
         } catch (DataAccessException exception) {
@@ -83,6 +87,7 @@ public class SettingsController {
      * Gets settings values of user.
      * @param userId - User ID.
      * @return - settings of user.
+     * @throws MainAccountDoesNotExist - Main account does not exist.
      * @throws SettingsMissing - Settings for user not found.
      */
     @Operation(summary = "Get settings")
