@@ -65,11 +65,12 @@ public class CalendarService {
         return calendarRepository.save(calendar);
     }
 
-    public List<Calendar> getCalendar (Long userId, Long year, Long month) throws AccountDoesNotExist, MainAccountIsNotConnected {
+    public List<Calendar> getCalendar(Long userId, Long year, Long month) throws AccountDoesNotExist, MainAccountIsNotConnected {
 
         userId = getUserOrPartnerId(userId);
 
-        return null;
+        return calendarRepository.findAllByUserId(userId).stream().filter(c->c.getDate().getYear()==year&&c.getDate().getMonthValue()==month).toList();
+
     }
 
     private Long getUserOrPartnerId(Long userId) throws AccountDoesNotExist, MainAccountIsNotConnected {
@@ -80,6 +81,5 @@ public class CalendarService {
         }
         return userId;
     }
-
 
 }
