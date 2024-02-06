@@ -47,7 +47,7 @@ public class CalendarController {
      * @throws MainAccountIsNotConnected - Main account isn't connected to this partner account.
      * @throws PeriodSameStartAndEnd - Can't have start and end of period in the same day.
      */
-    @Operation(summary = "Get settings")
+    @Operation(summary = "Update Calendar")
     @ApiResponses(
             value = {
                     @ApiResponse(
@@ -80,7 +80,7 @@ public class CalendarController {
     }
 
     @GetMapping("/getCalendar")
-    private ResponseEntity<List<Calendar>> getCalendar(@RequestParam Long userId, @RequestParam Long year, @RequestParam Long month) {
+    private ResponseEntity<List<Calendar>> getCalendar(@RequestParam Long userId, @RequestParam Long year, @RequestParam Long month) throws AccountDoesNotExist, MainAccountIsNotConnected {
         try {
             return ResponseEntity.ok(calendarService.getCalendar(userId, year, month));
         } catch (DataAccessException exception){

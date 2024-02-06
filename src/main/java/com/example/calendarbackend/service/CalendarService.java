@@ -54,11 +54,7 @@ public class CalendarService {
      */
     public Calendar updateCalendar(Long userId, Calendar calendar) throws AccountDoesNotExist, MainAccountIsNotConnected, PeriodSameStartAndEnd {
 
-        if (!userService.isMainAccount(userId)) {
-            if (settingsRepository.findByPartnerUserId(userId)!=null)
-                userId = settingsRepository.findByPartnerUserId(userId).getUser().getId();
-            else throw new MainAccountIsNotConnected();
-        }
+        userId = getUserOrPartnerId(userId);
 
         if (calendar.isPeriodStart() && calendar.isPeriodEnd()) throw  new PeriodSameStartAndEnd();
 
@@ -69,8 +65,21 @@ public class CalendarService {
         return calendarRepository.save(calendar);
     }
 
-    public List<Calendar> getCalendar (Long userId, Long year, Long month){
+    public List<Calendar> getCalendar (Long userId, Long year, Long month) throws AccountDoesNotExist, MainAccountIsNotConnected {
+
+        userId = getUserOrPartnerId(userId);
+
         return null;
     }
+
+    private Long getUserOrPartnerId(Long userId) throws AccountDoesNotExist, MainAccountIsNotConnected {
+        if (!userService.isMainAccount(userId)) {
+            if (settingsRepository.findByPartnerUserId(userId) != null)
+                userId = settingsRepository.findByPartnerUserId(userId).getUser().getId();
+            else throw new MainAccountIsNotConnected();
+        }
+        return userId;
+    }
+
 
 }
