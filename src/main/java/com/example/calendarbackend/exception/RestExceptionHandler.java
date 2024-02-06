@@ -8,9 +8,18 @@ import org.springframework.web.context.request.WebRequest;
 
 import java.time.LocalDateTime;
 
+/**
+ * Rest Exception Handler.
+ */
 @RestControllerAdvice
 public class RestExceptionHandler {
 
+    /**
+     * Rest Exception Handler.
+     * @param exception - Exception type.
+     * @param request - Request.
+     * @return - ResponseEntity with status code and error response.
+     */
     @ExceptionHandler({
             AccountDoesNotExist.class,
             IncorrectCredentials.class,
