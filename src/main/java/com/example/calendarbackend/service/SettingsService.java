@@ -6,6 +6,9 @@ import com.example.calendarbackend.repository.SettingsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service class for managing settings of users and related operations.
+ */
 @Service
 public class SettingsService {
 
