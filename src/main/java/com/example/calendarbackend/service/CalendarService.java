@@ -54,26 +54,26 @@ public class CalendarService {
      */
     public Calendar updateCalendar(Long userId, Calendar calendar) throws AccountDoesNotExist, MainAccountIsNotConnected, PeriodSameStartAndEnd {
 
-        userId = getUserOrPartnerId(userId);
+        Long mainUserId = getMainAccountUserId(userId);
 
         if (calendar.isPeriodStart() && calendar.isPeriodEnd()) throw  new PeriodSameStartAndEnd();
 
-        if (calendarRepository.findCalendarByUserIdAndDate(userId, calendar.getDate())!=null)
-            calendar.setId(calendarRepository.findCalendarByUserIdAndDate(userId, calendar.getDate()).getId());
-        calendar.setUser(userService.getUser(userId));
+        if (calendarRepository.findCalendarByUserIdAndDate(mainUserId, calendar.getDate())!=null)
+            calendar.setId(calendarRepository.findCalendarByUserIdAndDate(mainUserId, calendar.getDate()).getId());
+        calendar.setUser(userService.getUser(mainUserId));
 
         return calendarRepository.save(calendar);
     }
 
     public List<Calendar> getCalendar(Long userId, Long year, Long month) throws AccountDoesNotExist, MainAccountIsNotConnected {
 
-        userId = getUserOrPartnerId(userId);
+        Long mainUserId = getMainAccountUserId(userId);
 
-        return calendarRepository.findAllByUserId(userId).stream().filter(c->c.getDate().getYear()==year&&c.getDate().getMonthValue()==month).toList();
+        return calendarRepository.findAllByUserId(mainUserId).stream().filter(c->c.getDate().getYear()==year&&c.getDate().getMonthValue()==month).toList();
 
     }
 
-    private Long getUserOrPartnerId(Long userId) throws AccountDoesNotExist, MainAccountIsNotConnected {
+    private Long getMainAccountUserId(Long userId) throws AccountDoesNotExist, MainAccountIsNotConnected {
         if (!userService.isMainAccount(userId)) {
             if (settingsRepository.findByPartnerUserId(userId) != null)
                 userId = settingsRepository.findByPartnerUserId(userId).getUser().getId();
