@@ -47,7 +47,7 @@ public class CalendarController {
      * @throws MainAccountIsNotConnected - Main account isn't connected to this partner account.
      * @throws PeriodSameStartAndEnd - Can't have start and end of period in the same day.
      */
-    @Operation(summary = "Update Calendar")
+    @Operation(summary = "Update calendar")
     @ApiResponses(
             value = {
                     @ApiResponse(
@@ -79,6 +79,38 @@ public class CalendarController {
         }
     }
 
+    /**
+     * Gets list of calendars days for whole month.
+     * @param userId - user ID.
+     * @param year - year.
+     * @param month - month.
+     * @return List of calendar days.
+     * @throws AccountDoesNotExist - Account with this ID doesn't exist.
+     * @throws MainAccountIsNotConnected - Main account isn't connected to this partner account.
+     */
+    @Operation(summary = "Get calendar for whole month")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Got list of days.",
+                            content = @Content(
+                                    mediaType="application/json",
+                                    array = @ArraySchema(schema = @Schema(implementation = Calendar.class))
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Main account isn't connected to this partner account.",
+                            content = @Content
+                    ),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Server error",
+                            content = @Content
+                    )
+            }
+    )
     @GetMapping("/getCalendar")
     private ResponseEntity<List<Calendar>> getCalendar(@RequestParam Long userId, @RequestParam Long year, @RequestParam Long month) throws AccountDoesNotExist, MainAccountIsNotConnected {
         try {

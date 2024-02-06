@@ -65,6 +65,15 @@ public class CalendarService {
         return calendarRepository.save(calendar);
     }
 
+    /**
+     * Gets list of calendars days for whole month.
+     * @param userId - user ID.
+     * @param year - year.
+     * @param month - month.
+     * @return List of calendar days.
+     * @throws AccountDoesNotExist - Account with this ID doesn't exist.
+     * @throws MainAccountIsNotConnected - Main account isn't connected to this partner account.
+     */
     public List<Calendar> getCalendar(Long userId, Long year, Long month) throws AccountDoesNotExist, MainAccountIsNotConnected {
 
         Long mainUserId = getMainAccountUserId(userId);
@@ -73,6 +82,13 @@ public class CalendarService {
 
     }
 
+    /**
+     * Gets ID of Main Account for Partner Account
+     * @param userId - user ID.
+     * @return ID of Main account.
+     * @throws AccountDoesNotExist - Account with this ID doesn't exist.
+     * @throws MainAccountIsNotConnected - Main account isn't connected to this partner account.
+     */
     private Long getMainAccountUserId(Long userId) throws AccountDoesNotExist, MainAccountIsNotConnected {
         if (!userService.isMainAccount(userId)) {
             if (settingsRepository.findByPartnerUserId(userId) != null)
