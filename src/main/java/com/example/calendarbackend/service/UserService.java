@@ -49,14 +49,14 @@ public class UserService {
     }
 
     /**
-     * Creates new user.
-     * @param user - Create a new user.
+     * Add new user.
+     * @param  user - User to add
+     * @throws UserNameExists - username already exists.
+     * @throws TooShortCredentials - Credentials are too short.
      */
     public void addUser(User user) throws TooShortCredentials, UserNameExists {
-
         if (user.getPassword().length()<5||user.getUserName().length()<5) throw new TooShortCredentials();
         if (userRepository.findUserByUserName(user.getUserName())!=null) throw new UserNameExists();
-
         user.setId(0L);
         userRepository.save(user);
         if (user.isMainAccount()) {
@@ -65,12 +65,15 @@ public class UserService {
     }
 
     /**
-     * Validates username and password.
+     * Validates user (username and password).
      * @param userName - User name.
      * @param password - Password of user.
      * @return ID of user.
+     * @throws IncorrectCredentials - username or password are incorrect.
+     * @throws TooShortCredentials - username or password are too short.
      */
-    public Long validateUser(String userName, String password) throws IncorrectCredentials {
+    public Long validateUser(String userName, String password) throws IncorrectCredentials, TooShortCredentials {
+        if (password.length()<5||userName.length()<5) throw new TooShortCredentials();
         User user = userRepository.findUserByUserName(userName);
         if (user==null) throw new IncorrectCredentials();
         if (Objects.equals(user.getPassword(), password)) return user.getId();
