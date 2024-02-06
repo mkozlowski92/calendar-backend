@@ -84,6 +84,7 @@ public class UserService {
      * Checks if is main account.
      * @param userId - user ID.
      * @return - boolean: true - is main, false - is not main.
+     * @throws AccountDoesNotExist - Account with this ID doesn't exist.
      */
     public boolean isMainAccount(Long userId) throws AccountDoesNotExist {
         //TODO beautify this code:
