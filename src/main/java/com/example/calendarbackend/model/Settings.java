@@ -58,4 +58,13 @@ public class Settings {
      */
     private int lutealPhaseLength;
 
+    public Settings(long id, User user, User partnerUser, int cycleLength, int periodLength, int lutealPhaseLength) {
+        this.id = id;
+        this.user = user;
+        this.partnerUser = partnerUser;
+        this.cycleLength = cycleLength;
+        this.periodLength = periodLength;
+        this.lutealPhaseLength = lutealPhaseLength;
+    }
+
 }

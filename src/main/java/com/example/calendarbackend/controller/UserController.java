@@ -42,7 +42,7 @@ public class UserController {
      * Add new user.
      * Requires password at least 5 characters password length.
      * @param user - User to add.
-     * @return ResponseEntity with added user.
+     * @return ResponseEntity ok.
      * @throws UserNameExists - username already exists.
      * @throws TooShortCredentials - Credentials are too short.
      */
@@ -72,8 +72,6 @@ public class UserController {
     @PostMapping("/addUser")
     public ResponseEntity<Void> addUser(@RequestBody User user) throws UserNameExists, TooShortCredentials{
         try {
-            if (user.getPassword().length()<5||user.getUserName().length()<5) throw new TooShortCredentials();
-            user.setId(0L);
             userService.addUser(user);
             return ResponseEntity.ok().build();
         } catch (DataAccessException exception) {

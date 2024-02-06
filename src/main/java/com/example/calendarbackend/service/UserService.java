@@ -2,6 +2,7 @@ package com.example.calendarbackend.service;
 
 import com.example.calendarbackend.exception.AccountDoesNotExist;
 import com.example.calendarbackend.exception.IncorrectCredentials;
+import com.example.calendarbackend.exception.TooShortCredentials;
 import com.example.calendarbackend.exception.UserNameExists;
 import com.example.calendarbackend.model.Settings;
 import com.example.calendarbackend.model.User;
@@ -50,22 +51,17 @@ public class UserService {
     /**
      * Creates new user.
      * @param user - Create a new user.
-     * @return The created user.
      */
-    public User addUser(User user) throws UserNameExists {
+    public void addUser(User user) throws TooShortCredentials, UserNameExists {
 
+        if (user.getPassword().length()<5||user.getUserName().length()<5) throw new TooShortCredentials();
         if (userRepository.findUserByUserName(user.getUserName())!=null) throw new UserNameExists();
-        User addedUSer = userRepository.save(user);
+
+        user.setId(0L);
+        userRepository.save(user);
         if (user.isMainAccount()) {
-            Settings addedSettings = new Settings();
-            addedSettings.setId(0L);
-            addedSettings.setUser(user);
-            addedSettings.setCycleLength(DEFAULT_CYCLE_LENGTH);
-            addedSettings.setPeriodLength(DEFAULT_PERIOD_LENGTH);
-            addedSettings.setLutealPhaseLength(DEFAULT_LUTEAL_PHASE_LENGTH);
-            settingsRepository.save(addedSettings);
+            settingsRepository.save(new Settings(0L,user,null,DEFAULT_CYCLE_LENGTH,DEFAULT_PERIOD_LENGTH,DEFAULT_LUTEAL_PHASE_LENGTH));
         }
-        return addedUSer;
     }
 
     /**
