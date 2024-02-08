@@ -13,8 +13,19 @@ import java.util.List;
 @Repository
 public interface CalendarRepository extends JpaRepository<Calendar, Long> {
 
+    /**
+     * Query to find Calendar by UserId and Date.
+     * @param userId - ID of user.
+     * @param date - date.
+     * @return Calendar.
+     */
     Calendar findCalendarByUserIdAndDate(Long userId, LocalDate date);
 
+    /**
+     * Query to find all Calendar for User ID.
+     * @param userId - User ID.
+     * @return List of Calendar.
+     */
     List<Calendar> findAllByUserId(Long userId);
 
 }

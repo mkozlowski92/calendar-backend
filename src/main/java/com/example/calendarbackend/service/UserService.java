@@ -2,6 +2,7 @@ package com.example.calendarbackend.service;
 
 import com.example.calendarbackend.exception.AccountDoesNotExist;
 import com.example.calendarbackend.exception.IncorrectCredentials;
+import com.example.calendarbackend.exception.TooShortCredentials;
 import com.example.calendarbackend.exception.UserNameExists;
 import com.example.calendarbackend.model.Settings;
 import com.example.calendarbackend.model.User;
@@ -48,33 +49,31 @@ public class UserService {
     }
 
     /**
-     * Creates new user.
-     * @param user - Create a new user.
-     * @return The created user.
+     * Add new user.
+     * @param  user - User to add
+     * @throws UserNameExists - username already exists.
+     * @throws TooShortCredentials - Credentials are too short.
      */
-    public User addUser(User user) throws UserNameExists {
-
+    public void addUser(User user) throws TooShortCredentials, UserNameExists {
+        if (user.getPassword().length()<5||user.getUserName().length()<5) throw new TooShortCredentials();
         if (userRepository.findUserByUserName(user.getUserName())!=null) throw new UserNameExists();
-        User addedUSer = userRepository.save(user);
+        user.setId(0L);
+        userRepository.save(user);
         if (user.isMainAccount()) {
-            Settings addedSettings = new Settings();
-            addedSettings.setId(0L);
-            addedSettings.setUser(user);
-            addedSettings.setCycleLength(DEFAULT_CYCLE_LENGTH);
-            addedSettings.setPeriodLength(DEFAULT_PERIOD_LENGTH);
-            addedSettings.setLutealPhaseLength(DEFAULT_LUTEAL_PHASE_LENGTH);
-            settingsRepository.save(addedSettings);
+            settingsRepository.save(new Settings(0L,user,null,DEFAULT_CYCLE_LENGTH,DEFAULT_PERIOD_LENGTH,DEFAULT_LUTEAL_PHASE_LENGTH));
         }
-        return addedUSer;
     }
 
     /**
-     * Validates username and password.
+     * Validates user (username and password).
      * @param userName - User name.
      * @param password - Password of user.
      * @return ID of user.
+     * @throws IncorrectCredentials - username or password are incorrect.
+     * @throws TooShortCredentials - username or password are too short.
      */
-    public Long validateUser(String userName, String password) throws IncorrectCredentials {
+    public Long validateUser(String userName, String password) throws IncorrectCredentials, TooShortCredentials {
+        if (password.length()<5||userName.length()<5) throw new TooShortCredentials();
         User user = userRepository.findUserByUserName(userName);
         if (user==null) throw new IncorrectCredentials();
         if (Objects.equals(user.getPassword(), password)) return user.getId();
@@ -85,6 +84,7 @@ public class UserService {
      * Checks if is main account.
      * @param userId - user ID.
      * @return - boolean: true - is main, false - is not main.
+     * @throws AccountDoesNotExist - Account with this ID doesn't exist.
      */
     public boolean isMainAccount(Long userId) throws AccountDoesNotExist {
         //TODO beautify this code:

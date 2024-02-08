@@ -25,7 +25,7 @@ public class Settings {
     private long id;
 
     /**
-     * User ID.
+     * User entity.
      */
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -33,7 +33,7 @@ public class Settings {
     private User user;
 
     /**
-     * Optional ID of partner account.
+     * Optional entity of partner account.
      */
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "partner_id", referencedColumnName = "id")
@@ -57,5 +57,23 @@ public class Settings {
      * default value is 14.
      */
     private int lutealPhaseLength;
+
+    /**
+     * Settings constructor.
+     * @param id Settings ID.
+     * @param user User entity.
+     * @param partnerUser Optional entity of partner account.
+     * @param cycleLength Length of period.
+     * @param periodLength Length of period.
+     * @param lutealPhaseLength Length of luteal phase.
+     */
+    public Settings(long id, User user, User partnerUser, int cycleLength, int periodLength, int lutealPhaseLength) {
+        this.id = id;
+        this.user = user;
+        this.partnerUser = partnerUser;
+        this.cycleLength = cycleLength;
+        this.periodLength = periodLength;
+        this.lutealPhaseLength = lutealPhaseLength;
+    }
 
 }

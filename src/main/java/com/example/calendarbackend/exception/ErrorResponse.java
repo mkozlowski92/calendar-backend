@@ -5,6 +5,9 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+/**
+ * ErrorResponse class.
+ */
 @Getter
 @Setter
 public class ErrorResponse {
@@ -13,6 +16,13 @@ public class ErrorResponse {
     private String error;
     private String path;
 
+    /**
+     * ErrorResponse constructor.
+     * @param timestamp - Timestamp.
+     * @param status - Status.
+     * @param error - Error.
+     * @param path - Path.
+     */
     public ErrorResponse(LocalDateTime timestamp, int status, String error, String path) {
         this.timestamp = timestamp;
         this.status = status;
