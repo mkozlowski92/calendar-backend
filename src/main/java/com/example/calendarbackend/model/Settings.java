@@ -58,6 +58,8 @@ public class Settings {
      */
     private int lutealPhaseLength;
 
+    public Settings(){}
+
     /**
      * Settings constructor.
      * @param id Settings ID.

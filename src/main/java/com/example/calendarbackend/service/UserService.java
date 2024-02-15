@@ -87,7 +87,6 @@ public class UserService {
      * @throws AccountDoesNotExist - Account with this ID doesn't exist.
      */
     public boolean isMainAccount(Long userId) throws AccountDoesNotExist {
-        //TODO beautify this code:
         if (userRepository.existsById(userId))
             return userRepository.findById(userId).get().isMainAccount();
         throw new AccountDoesNotExist();

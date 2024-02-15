@@ -58,4 +58,15 @@ public class User {
     @JsonIgnore
     private List<Calendar> calendar;
 
+    public User(){
+    }
+
+    public User(long id, String userName, String password, boolean mainAccount, Settings settings, List<Calendar> calendar) {
+        this.id = id;
+        this.userName = userName;
+        this.password = password;
+        this.mainAccount = mainAccount;
+        this.settings = settings;
+        this.calendar = calendar;
+    }
 }
