@@ -3,7 +3,6 @@ package com.calendarbackend.service;
 import com.calendarbackend.exception.*;
 import com.calendarbackend.model.Settings;
 import com.calendarbackend.repository.SettingsRepository;
-import com.example.calendarbackend.exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
